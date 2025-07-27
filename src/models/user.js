@@ -1,26 +1,53 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+
+const userSchema = new mongoose.Schema(
+  {
     firstName: {
-        type: String
+      type: String,
+      required: true,
+      minLength: 4,
+      maxLength: 50,
     },
-    lastName:{
-        type: String
+    lastName: {
+      type: String,
     },
     emailId: {
-        type: String
+      type: String,
+      lowercase: true,
+      required: true,
+      unique: true,
+      trim: true,
     },
     password: {
-        type:String
+      type: String,
+      required: true,
     },
     age: {
-        type: String
+      type: Number,
+      min: 18,
     },
     gender: {
-        type: String
-    }
+      type: String,
+    },
+    photoUrl:{
+        type:String,
+        default: "Url"
+
+    },
+    about:{
+        type:String,
+        default: "This is a default about of the user!"
+    },
+    skills:{
+        type:[String]
+       
+    },
+
+     
 });
 
 const User = mongoose.model("User", userSchema);
+
 
 module.exports = User;

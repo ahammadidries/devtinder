@@ -3,10 +3,12 @@ const connectDB = require("./config/database.js");
 const User = require('./models/user');
 const app = express();
 
+
 app.use(express.json());
 //signup API
 app.post("/signup", async (req, res)=>{
     try {
+
         const user = new User(req.body);
     
         await user.save();
@@ -14,7 +16,7 @@ app.post("/signup", async (req, res)=>{
         res.send("User data sended successfully");
     } catch (err) {
 
-        res.status(500).send("Signup went worng!!");
+        res.status(500).send(`Signup went worng!! Error : ${err}`);
         
     }
         

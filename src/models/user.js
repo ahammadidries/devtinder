@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      validate(value) {
+        if (!["male","famale","others"].includes(value)) {
+            throw new Error("Gender data is not vaild");
+        }
+     }
+
     },
     photoUrl:{
         type:String,
@@ -44,8 +50,15 @@ const userSchema = new mongoose.Schema(
        
     },
 
+
      
-});
+},
+
+{
+    timetamps: true
+}
+
+);
 
 const User = mongoose.model("User", userSchema);
 

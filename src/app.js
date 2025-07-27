@@ -4,16 +4,23 @@ const User = require('./models/user');
 const app = express();
 
 app.use(express.json());
-
+//signup API
 app.post("/signup", async (req, res)=>{
+    try {
         const user = new User(req.body);
     
         await user.save();
 
-    res.send("User data sended successfully");
+        res.send("User data sended successfully");
+    } catch (err) {
+
+        res.status(500).send("Signup went worng!!");
+        
+    }
+        
 });
 
-//Get user by email
+//Get user by email from the database
 app.get("/user", async (req,res)=> {
    
    const userEmail = req.body.emailId;
@@ -30,6 +37,7 @@ app.get("/user", async (req,res)=> {
    }
 });
 
+
 // Feed API - GET /feed - get all the users froom the database
 app.get("/feed", async (req , res)=> {
     try {
@@ -41,6 +49,30 @@ app.get("/feed", async (req , res)=> {
     }
 });
 
+//Update data of the user
+app.patch("/user", async (req,res)=> {
+    const userId = req.body.userId;
+    const data = req.body;
+    try {
+        await User.findByIdAndUpdate({_id:userId},data);
+        res.send("User updated successfully");
+    } catch (err) {
+        res.status(500).send("Update went worng!!");
+    }
+});
+
+//User Delete API from the database
+app.delete("/user", async(req,res)=> {
+
+    const userId = req.body.userId;
+    try {
+        const user = await User.findByIdAndDelete(userId);
+        res.send("User deleted successfully");
+    } catch (err) {
+        res.status(404).send("Users not found");
+    }
+    
+});
 
 connectDB()
     .then(()=> {
